@@ -1,0 +1,7 @@
+limitations
+not all data is collected hence the less ratings are not collected
+
+
+amazon gives only 100 reviews for every rating 
+but i made a code that gives for all pages 
+since it doesn't work i put it as comments if anyone wants for any reference
