@@ -102,7 +102,6 @@ def scrape_amazon_reviews(inputx):
     for rating in stars.keys():
         reviews = get_reviews_for_rating(driver, rating)
         reviews = get_reviews_for_rating(driver, rating)
-        reviews = get_reviews_for_rating(driver, rating)
         stars[rating] = reviews
     
     updated_stars = {}
@@ -140,7 +139,7 @@ def scrape_amazon_reviews(inputx):
             time.sleep(2)
             url = f"{url1}&pageNumber={page_number}&filterByStar={filters}"
             driver.get(url)
-            rating_button = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.LINK_TEXT, rating_text)))
+            rating_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LINK_TEXT, rating_text)))
             rating_button.click()
             html = driver.page_source
             soup = BeautifulSoup(html, 'html.parser')
