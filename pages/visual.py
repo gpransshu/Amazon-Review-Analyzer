@@ -31,7 +31,7 @@ df = st.session_state['review']
 dfcopy = df.copy()
 #df1 = pd.read_excel("ratingdata.xlsx")
 df1 = st.session_state['rating']
-
+df1copy = df1.copy()
 # Streamlit dashboard
 st.title("Amazon Reviews Scraper")
 
@@ -100,21 +100,23 @@ def plot_average_sentiment(df):
 def create_gauge_chart(df, star_index):
     star_rating = df['star_rating'][star_index]
     reviews = df['reviews'][star_index]
+    ratings = df['ratings'][star_index]
+    summ = ratings+reviews
 
     fig = go.Figure(go.Indicator(
         mode="gauge+number+delta",
-        value=reviews,  # Reviews for the specified star rating
+        value=ratings,  # Reviews for the specified star rating
         title={'text': f"{star_rating} Reviews", 'font': {'size': 24}},
         domain={'x': [0, 1], 'y': [0, 1]},
-        delta={'reference': df['reviews'].mean(), 'increasing': {'color': "orange"}},
+        delta={'reference': summ, 'increasing': {'color': "orange"}},
         gauge={
-            'axis': {'range': [None, df['reviews'].max()], 'tickwidth': 1, 'tickcolor': "darkblue"},
+            'axis': {'range': [None, summ], 'tickwidth': 1, 'tickcolor': "darkblue"},
             'bar': {'color': "darkblue"},
             'borderwidth': 2,
             'bordercolor': "lightgray",
             'steps': [
-                {'range': [0, df['reviews'].max() * 0.5], 'color': 'orange'},
-                {'range': [df['reviews'].max() * 0.5, df['reviews'].max()], 'color': 'darkgray'}
+                {'range': [0, reviews], 'color': 'orange'},
+                {'range': [reviews, summ], 'color': 'darkgray'}
             ],
             'threshold': {
                 'line': {'color': "orange", 'width': 4},
@@ -478,11 +480,12 @@ with cols[1]:
             plt_wordcloud = generate_word_cloud(sentiment, top_keywords[sentiment])
             st.pyplot(plt_wordcloud, use_container_width=True)
 
-    fig_bar1 = bar(dfcopy)
-    st.plotly_chart(fig_bar1, use_container_width=True)
+    if len(df.iloc[:, df.columns.get_loc("body")+1:].copy().columns)>1:
+        fig_bar1 = bar(dfcopy)
+        st.plotly_chart(fig_bar1, use_container_width=True)
 
-    fig_bar2 = bar1(dfcopy)
-    st.plotly_chart(fig_bar2, use_container_width=True)
+        fig_bar2 = bar1(dfcopy)
+        st.plotly_chart(fig_bar2, use_container_width=True)
 
 
 cols1 = st.columns(1)

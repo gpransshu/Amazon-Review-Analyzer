@@ -101,6 +101,8 @@ def scrape_amazon_reviews(inputx):
     
     for rating in stars.keys():
         reviews = get_reviews_for_rating(driver, rating)
+        reviews = get_reviews_for_rating(driver, rating)
+        reviews = get_reviews_for_rating(driver, rating)
         stars[rating] = reviews
     
     updated_stars = {}
